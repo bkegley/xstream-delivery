@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "outDir": "dist",
     "target": "es6",
     "module": "commonjs",
     "sourceMap": true,
@@ -8,6 +9,9 @@
     "strict": true,
     "esModuleInterop": true,
     "noImplicitAny": true,
-    "resolveJsonModule": true
-  }
+    "resolveJsonModule": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
+  },
+  "include": ["./src"]
 }
