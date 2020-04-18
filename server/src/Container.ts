@@ -1,9 +1,9 @@
-interface IContainer {
+export interface IContainer {
   bind<T>(inter: Symbol, init: T): void;
   bind<T>(inter: Symbol, init: (resolver: IResolver) => T): void;
 }
 
-interface IResolver {
+export interface IResolver {
   resolve<T>(clazz: Symbol): T;
 }
 
