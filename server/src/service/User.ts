@@ -1,7 +1,7 @@
 import { User } from "../entity/User";
 import { PokemonService } from "./Pokemon";
-import { BaseService } from "../abstract/BaseService";
-import { IUserService } from "../interfaces/User";
+import { BaseService } from "../abstract";
+import { IUserService } from "../interfaces";
 
 export class UserService extends BaseService implements IUserService {
   public getUserWithPokemon(id: string) {

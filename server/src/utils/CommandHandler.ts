@@ -1,6 +1,6 @@
 import { ChatUserstate } from "tmi.js";
 import { IResolver } from "./Container";
-import { ICommand } from "./interfaces/Command";
+import { ICommand } from "../interfaces";
 
 export class CommandHandler {
   private registry = new Map();

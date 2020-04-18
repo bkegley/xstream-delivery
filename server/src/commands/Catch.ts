@@ -1,13 +1,12 @@
 import { Server } from "socket.io";
-import { UserService } from "../service/User";
 import { ChatUserstate } from "tmi.js";
-import { ICommand } from "../interfaces/Command";
+import { ICommand, IUserService } from "../interfaces";
 
 export class CatchCommand implements ICommand {
   private io: Server;
-  private userService: UserService;
+  private userService: IUserService;
 
-  constructor(io: Server, userService: UserService) {
+  constructor(io: Server, userService: IUserService) {
     this.io = io;
     this.userService = userService;
   }

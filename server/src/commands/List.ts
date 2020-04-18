@@ -1,7 +1,6 @@
 import { ChatUserstate } from "tmi.js";
 import { Server } from "socket.io";
-import { IUserService } from "../interfaces/User";
-import { ICommand } from "../interfaces/Command";
+import { ICommand, IUserService } from "../interfaces";
 
 export class ListCommand implements ICommand {
   private io: Server;

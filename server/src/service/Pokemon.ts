@@ -1,6 +1,6 @@
 import { Pokemon } from "../entity/Pokemon";
-import { IPokemonService } from "../interfaces/Pokemon";
-import { BaseService } from "../abstract/BaseService";
+import { IPokemonService } from "../interfaces";
+import { BaseService } from "../abstract";
 
 export class PokemonService extends BaseService implements IPokemonService {
   public async getById(id: number) {

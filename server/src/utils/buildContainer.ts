@@ -1,13 +1,9 @@
 import { Container } from "./Container";
 import { EntityManager, getManager } from "typeorm";
-import { PokemonService } from "./service/Pokemon";
-import { UserService } from "./service/User";
-import { ICommand } from "./interfaces/Command";
-import { IPokemonService } from "./interfaces/Pokemon";
-import { IUserService } from "./interfaces/User";
-import { TYPES } from "./types";
-import { CatchCommand } from "./commands/Catch";
-import { ListCommand } from "./commands/List";
+import { PokemonService, UserService } from "../service";
+import { ICommand, IPokemonService, IUserService } from "../interfaces";
+import { TYPES } from "../abstract";
+import { CatchCommand, ListCommand } from "../commands";
 
 export async function buildContainer() {
   const container = new Container();

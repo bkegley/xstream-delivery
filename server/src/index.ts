@@ -6,9 +6,9 @@ const io = require("socket.io")(http);
 import { Server } from "socket.io";
 import { client, Options, Client } from "tmi.js";
 import { createConnection } from "typeorm";
-import { buildContainer } from "./buildContainer";
-import { TYPES } from "./types";
-import { CommandHandler } from "./CommandHandler";
+import { buildContainer } from "./utils/buildContainer";
+import { TYPES } from "./abstract";
+import { CommandHandler } from "./utils/CommandHandler";
 
 const botOptions: Options = {
   identity: {
