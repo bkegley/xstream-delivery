@@ -4,9 +4,20 @@ const app = require("express")();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 import { client, Options, Events, ChatUserstate } from "tmi.js";
-import { createConnection, getConnection, getManager } from "typeorm";
+import {
+  createConnection,
+  getConnection,
+  getManager,
+  EntityManager,
+} from "typeorm";
+import { PokemonService } from "./service/Pokemon";
+import { UserService } from "./service/User";
 import { User } from "./entity/User";
 import { Pokemon } from "./entity/Pokemon";
+import { buildContainer } from "./buildContainer";
+import { TYPES } from "./types";
+import { IUserService } from "./interfaces/User";
+import { IPokemonService } from "./interfaces/Pokemon";
 
 const botOptions: Options = {
   identity: {
@@ -23,23 +34,24 @@ interface Message {
 
 async function startServer() {
   await createConnection();
-
   const twitchClient = client(botOptions);
+  const container = await buildContainer();
+  const userService = container.resolve<IUserService>(TYPES.UserService);
+  const pokemonService = container.resolve<IPokemonService>(
+    TYPES.PokemonService
+  );
 
   const handleCommand = async (message: string, user: ChatUserstate) => {
     const words = message.split(" ");
     const command = words[0].replace("!", "");
+
     switch (command) {
-      case "poke": {
-        const id = words[1];
-        io.emit("pokemon", id);
-      }
       case "catch": {
         if (!user.username) {
           return;
         }
 
-        let id;
+        let id: number;
         try {
           id = parseInt(words[1]);
           if (isNaN(id)) {
@@ -49,30 +61,18 @@ async function startServer() {
           return;
         }
 
-        const manager = await getManager();
-        const [foundUser, foundPokemon] = await Promise.all([
-          manager
-            .createQueryBuilder(User, "user")
-            .leftJoinAndSelect("user.pokemon", "pokemon")
-            .where("user.username = :username", { username: user.username })
-            .getOne(),
-          manager.findOne(Pokemon, id),
-        ]);
+        const newUser = await userService.catchPokemon(user.username, id);
+        console.log({ newUser });
 
-        if (!foundPokemon) {
+        if (!newUser) {
           return;
         }
 
-        if (foundUser && foundUser.pokemon.indexOf(foundPokemon) === -1) {
-          foundUser.pokemon = foundUser.pokemon.concat(foundPokemon);
-          manager.save(foundUser);
-          return;
-        }
-
-        const newUser = new User();
-        newUser.username = user.username;
-        newUser.pokemon = [foundPokemon];
-        manager.save(newUser);
+        const newPokemon = newUser?.pokemon.find((poke: any) => poke.id === id);
+        io.emit("pokemon-catch", {
+          user: newUser,
+          pokemon: newPokemon,
+        });
         return;
       }
 
@@ -80,20 +80,20 @@ async function startServer() {
         if (!user.username) {
           return;
         }
-        const foundUser = await getManager()
-          .createQueryBuilder(User, "user")
-          .leftJoinAndSelect("user.pokemon", "pokemon")
-          .where("user.username = :username", { username: user.username })
-          .getOne();
+        const foundUser = await userService.getUserWithPokemon(user.username);
 
         if (!foundUser) {
           return;
         }
 
+        console.log({ pokemon: foundUser.pokemon.map((poke) => poke.name) });
+
         io.emit("pokemon-list", {
           user: user.username,
           pokemon: foundUser.pokemon,
         });
+
+        break;
       }
     }
   };
