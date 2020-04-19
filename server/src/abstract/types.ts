@@ -6,6 +6,7 @@ export const TYPES = {
 
   // commands
   CatchCommand: Symbol("CatchCommand"),
+  DuelCommand: Symbol("DuelCommand"),
   ListCommand: Symbol("ListCommand"),
 
   // services

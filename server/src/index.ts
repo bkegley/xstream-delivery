@@ -28,18 +28,7 @@ async function startServer() {
   const commandHandler = new CommandHandler(container);
   commandHandler.registerCommand("!list", TYPES.ListCommand);
   commandHandler.registerCommand("!catch", TYPES.CatchCommand);
-
-  // const handleCommand = async (message: string, user: ChatUserstate) => {
-  //   const words = message.split(" ");
-  //   const command = words[0].replace("!", "");
-
-  //   switch (command) {
-  //     case 'hunt': {
-
-  //     }
-  //
-  //   }
-  // };
+  commandHandler.registerCommand("!duel", TYPES.DuelCommand);
 
   twitchClient.on("message", (channel, user, message, self) => {
     if (message[0] === "!") {

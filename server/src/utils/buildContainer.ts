@@ -4,6 +4,7 @@ import { PokemonService, UserService } from "../service";
 import { ICommand, IPokemonService, IUserService } from "../interfaces";
 import { TYPES } from "../abstract";
 import { CatchCommand, ListCommand } from "../commands";
+import { DuelCommand } from "../commands/Duel";
 
 export async function buildContainer() {
   const container = new Container();
@@ -14,17 +15,27 @@ export async function buildContainer() {
 
   // command bindings
   container.bind<ICommand>(
-    TYPES.ListCommand,
+    TYPES.CatchCommand,
     (resolver) =>
-      new ListCommand(
+      new CatchCommand(
         resolver.resolve(TYPES.IOServer),
         resolver.resolve(TYPES.UserService)
       )
   );
+
   container.bind<ICommand>(
-    TYPES.CatchCommand,
+    TYPES.DuelCommand,
     (resolver) =>
-      new CatchCommand(
+      new DuelCommand(
+        resolver.resolve(TYPES.IOServer),
+        resolver.resolve(TYPES.UserService)
+      )
+  );
+
+  container.bind<ICommand>(
+    TYPES.ListCommand,
+    (resolver) =>
+      new ListCommand(
         resolver.resolve(TYPES.IOServer),
         resolver.resolve(TYPES.UserService)
       )
