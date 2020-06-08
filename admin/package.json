@@ -1,0 +1,25 @@
+{
+  "name": "xstream-admin",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "Bryan Kegley <hi@bryankegley.me>",
+  "license": "MIT",
+  "scripts": {
+    "develop": "gatsby develop",
+    "clean": "gatsby clean",
+    "build": "gatsby build",
+    "serve": "gatsby serve"
+  },
+  "dependencies": {
+    "formik": "^2.1.4",
+    "gatsby": "^2.23.1",
+    "gatsby-plugin-postcss": "^2.3.3",
+    "gatsby-plugin-typescript": "^2.4.4",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0"
+  },
+  "devDependencies": {
+    "tailwindcss": "^1.4.6"
+  }
+}
