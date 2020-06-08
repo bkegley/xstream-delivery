@@ -5,11 +5,26 @@ export const TYPES = {
   TwitchClient: Symbol("TwitchClient"),
 
   // commands
-  CatchCommand: Symbol("CatchCommand"),
-  DuelCommand: Symbol("DuelCommand"),
-  ListCommand: Symbol("ListCommand"),
+  AnswerCommand: Symbol("AnswerCommand"),
+  GiveCommand: Symbol("GiveCommand"),
+  PewCreateCommand: Symbol("PewCreateCommand"),
+  PewListCommand: Symbol("PewListCommand"),
+  PewPewCommand: Symbol("PewPewCommand"),
+  RestartCommand: Symbol("RestartCommand"),
+  StopCommand: Symbol("StopCommand"),
+
+  // routes
+  GetPews: Symbol("GetPews"),
+  CreatePew: Symbol("CreatePew"),
+  UpdatePew: Symbol("UpdatePew"),
+  GetVehicles: Symbol("GetVehicles"),
+  CreateVehicle: Symbol("CreateVehicle"),
+  UpdateVehicle: Symbol("UpdateVehicle"),
 
   // services
-  PokemonService: Symbol("Pokemon"),
+  DeliverySessionService: Symbol("DeliverySessionService"),
   UserService: Symbol("UserService"),
+  PewService: Symbol("PewService"),
+  PhoneService: Symbol("PhoneService"),
+  VehicleService: Symbol("VehicleService"),
 };

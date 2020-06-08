@@ -1,12 +1,12 @@
-import { Entity, Column, PrimaryColumn, ManyToMany, JoinTable } from "typeorm";
-import { Pokemon } from "./Pokemon";
+import { Entity, PrimaryColumn, Column } from "typeorm";
 
 @Entity()
 export class User {
   @PrimaryColumn()
   username!: string;
 
-  @ManyToMany((type) => Pokemon, { cascade: true })
-  @JoinTable()
-  pokemon!: Pokemon[];
+  @Column({
+    default: 0,
+  })
+  currency!: number;
 }

@@ -1,10 +1,31 @@
 import { Container } from "./Container";
 import { EntityManager, getManager } from "typeorm";
-import { PokemonService, UserService } from "../service";
-import { ICommand, IPokemonService, IUserService } from "../interfaces";
+import { DeliverySessionService, UserService, PhoneService } from "../service";
+import {
+  ICommand,
+  IDeliverySessionService,
+  IUserService,
+  IPewService,
+  IRoute,
+} from "../interfaces";
 import { TYPES } from "../abstract";
-import { CatchCommand, ListCommand } from "../commands";
-import { DuelCommand } from "../commands/Duel";
+import {
+  AnswerCommand,
+  PewCreateCommand,
+  GiveCommand,
+  PewListCommand,
+  RestartCommand,
+} from "../commands";
+import { StopCommand } from "../commands/Stop";
+import { PewPewCommand } from "../commands/PewPew";
+import { PewService } from "../service/Pew";
+import { GetPews } from "../routes/pews/Get";
+import { CreatePew } from "../routes/pews/Post";
+import { UpdatePew } from "../routes/pews/Put";
+import { GetVehicles } from "../routes/vehicles/Get";
+import { CreateVehicle } from "../routes/vehicles/Post";
+import { IVehicleService } from "../interfaces/Vehicle";
+import { VehicleService } from "../service/Vehicle";
 
 export async function buildContainer() {
   const container = new Container();
@@ -15,41 +36,115 @@ export async function buildContainer() {
 
   // command bindings
   container.bind<ICommand>(
-    TYPES.CatchCommand,
+    TYPES.AnswerCommand,
     (resolver) =>
-      new CatchCommand(
+      new AnswerCommand(
+        resolver.resolve(TYPES.IOServer),
+        resolver.resolve(TYPES.DeliverySessionService),
+        resolver.resolve(TYPES.PhoneService)
+      )
+  );
+
+  container.bind<ICommand>(
+    TYPES.GiveCommand,
+    (resolver) =>
+      new GiveCommand(
         resolver.resolve(TYPES.IOServer),
         resolver.resolve(TYPES.UserService)
       )
   );
 
   container.bind<ICommand>(
-    TYPES.DuelCommand,
+    TYPES.RestartCommand,
+    (resolver) => new RestartCommand(resolver.resolve(TYPES.PhoneService))
+  );
+
+  container.bind<ICommand>(
+    TYPES.StopCommand,
     (resolver) =>
-      new DuelCommand(
+      new StopCommand(
         resolver.resolve(TYPES.IOServer),
+        resolver.resolve(TYPES.PhoneService)
+      )
+  );
+
+  container.bind<ICommand>(
+    TYPES.PewListCommand,
+    (resolver) =>
+      new PewListCommand(
+        resolver.resolve(TYPES.IOServer),
+        resolver.resolve(TYPES.PewService)
+      )
+  );
+
+  container.bind<ICommand>(
+    TYPES.PewPewCommand,
+    (resolver) =>
+      new PewPewCommand(
+        resolver.resolve(TYPES.IOServer),
+        resolver.resolve(TYPES.PewService),
         resolver.resolve(TYPES.UserService)
       )
   );
 
   container.bind<ICommand>(
-    TYPES.ListCommand,
+    TYPES.PewCreateCommand,
     (resolver) =>
-      new ListCommand(
+      new PewCreateCommand(
         resolver.resolve(TYPES.IOServer),
-        resolver.resolve(TYPES.UserService)
+        resolver.resolve(TYPES.PewService)
       )
+  );
+
+  // route bindings
+  container.bind<IRoute>(
+    TYPES.GetPews,
+    (resolver) => new GetPews(resolver.resolve(TYPES.PewService))
+  );
+
+  container.bind<IRoute>(
+    TYPES.CreatePew,
+    (resolver) => new CreatePew(resolver.resolve(TYPES.PewService))
+  );
+
+  container.bind<IRoute>(
+    TYPES.UpdatePew,
+    (resolver) => new UpdatePew(resolver.resolve(TYPES.PewService))
+  );
+
+  container.bind<IRoute>(
+    TYPES.GetVehicles,
+    (resolver) => new GetVehicles(resolver.resolve(TYPES.VehicleService))
+  );
+
+  container.bind<IRoute>(
+    TYPES.CreateVehicle,
+    (resolver) => new CreateVehicle(resolver.resolve(TYPES.VehicleService))
   );
 
   // service bindings
-  container.bind<IPokemonService>(
-    TYPES.PokemonService,
-    (resolver) => new PokemonService(resolver.resolve(TYPES.EntityManager))
+  container.bind<IDeliverySessionService>(
+    TYPES.DeliverySessionService,
+    (resolver) =>
+      new DeliverySessionService(
+        resolver.resolve(TYPES.EntityManager),
+        resolver.resolve(TYPES.IOServer)
+      )
   );
 
   container.bind<IUserService>(
     TYPES.UserService,
     (resolver) => new UserService(resolver.resolve(TYPES.EntityManager))
+  );
+
+  container.bind<IPewService>(
+    TYPES.PewService,
+    (resolver) => new PewService(resolver.resolve(TYPES.EntityManager))
+  );
+
+  container.bind<IVehicleService>(
+    TYPES.VehicleService,
+    (resolver) => new VehicleService(resolver.resolve(TYPES.EntityManager))
   );
 
   return container;

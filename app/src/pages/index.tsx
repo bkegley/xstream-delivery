@@ -1,43 +1,24 @@
 import React from "react";
-import socketIo from "socket.io-client";
-import Pokemon from "../components/Pokemon";
-import PokemonProvider from "../utils/PokemonProvider";
-
-const socket = socketIo("http://localhost:4000");
-
-interface Message {
-  displayName?: string;
-  message: string;
-}
+import { useSocket } from "../utils/useSocket";
+import { Phone } from "../components/Phone";
+import { PewQueue } from "../components/PewQueue";
 
 const IndexPage = () => {
-  const [pokemon, setPokemon] = React.useState([]);
-  return (
-    <PokemonProvider>
-      <PokemonList pokemon={pokemon} setPokemon={setPokemon} />
-    </PokemonProvider>
-  );
-};
-
-const PokemonList = ({ pokemon, setPokemon }) => {
-  console.log({ pokemon });
-
+  const socket = useSocket();
+  const [deliverySession, setDeliverySession] = React.useState(null);
   React.useEffect(() => {
-    socket.on("pokemon", (id) => {
-      console.log({ id });
-      setPokemon((old) => {
-        console.log({ old });
-        return old.concat(id);
-      });
+    socket.on("delivery-session-created", (deliverySession) => {
+      setDeliverySession(deliverySession);
     });
+
     return () => socket.close();
   }, []);
-
   return (
-    <div>
-      {pokemon.map((poke) => (
-        <Pokemon id={poke} />
-      ))}
+    <div className="min-w-screen min-h-screen">
+      <h1>xStream Delivery</h1>
+      <Phone />
+      <PewQueue />
+      <pre>{JSON.stringify(deliverySession, null, 2)}</pre>
     </div>
   );
 };
