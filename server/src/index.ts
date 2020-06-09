@@ -45,6 +45,7 @@ async function startServer() {
   commandHandler.registerCommand("!pewlist", TYPES.PewListCommand);
   commandHandler.registerCommand("!pewcreate", TYPES.PewCreateCommand);
   commandHandler.registerCommand("!pewpew", TYPES.PewPewCommand);
+  commandHandler.registerCommand("!purchase", TYPES.PurchaseVehicle);
   commandHandler.registerCommand("!restart", TYPES.RestartCommand);
   commandHandler.registerCommand("!stop", TYPES.StopCommand);
 

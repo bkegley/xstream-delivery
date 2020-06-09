@@ -10,6 +10,7 @@ export const TYPES = {
   PewCreateCommand: Symbol("PewCreateCommand"),
   PewListCommand: Symbol("PewListCommand"),
   PewPewCommand: Symbol("PewPewCommand"),
+  PurchaseVehicle: Symbol("PurchaseVehicle"),
   RestartCommand: Symbol("RestartCommand"),
   StopCommand: Symbol("StopCommand"),
 

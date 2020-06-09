@@ -1,4 +1,5 @@
-import { Entity, PrimaryColumn, Column } from "typeorm";
+import { Entity, PrimaryColumn, Column, ManyToMany, JoinTable } from "typeorm";
+import { Vehicle } from "./Vehicle";
 
 @Entity()
 export class User {
@@ -9,4 +10,8 @@ export class User {
     default: 0,
   })
   currency!: number;
+
+  @ManyToMany((type) => Vehicle)
+  @JoinTable()
+  vehicles?: Array<Vehicle>;
 }

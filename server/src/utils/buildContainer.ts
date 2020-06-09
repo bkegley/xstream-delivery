@@ -26,6 +26,7 @@ import { GetVehicles } from "../routes/vehicles/Get";
 import { CreateVehicle } from "../routes/vehicles/Post";
 import { IVehicleService } from "../interfaces/Vehicle";
 import { VehicleService } from "../service/Vehicle";
+import { PurchaseVehicleCommand } from "../commands/PurchaseVehicle";
 
 export async function buildContainer() {
   const container = new Container();
@@ -93,6 +94,15 @@ export async function buildContainer() {
       new PewCreateCommand(
         resolver.resolve(TYPES.IOServer),
         resolver.resolve(TYPES.PewService)
+      )
+  );
+
+  container.bind<ICommand>(
+    TYPES.PurchaseVehicle,
+    (resolver) =>
+      new PurchaseVehicleCommand(
+        resolver.resolve(TYPES.UserService),
+        resolver.resolve(TYPES.VehicleService)
       )
   );
 

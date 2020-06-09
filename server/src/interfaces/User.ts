@@ -1,4 +1,5 @@
 import { User } from "../entity/User";
+import { Vehicle } from "../entity/Vehicle";
 
 export interface IUserService {
   getByUsername: (username: string) => Promise<User | undefined>;
@@ -6,5 +7,9 @@ export interface IUserService {
   spendCurrency: (
     username: string,
     amount: number
+  ) => Promise<User | undefined>;
+  purchaseVehicle: (
+    username: string,
+    vehicle: Vehicle
   ) => Promise<User | undefined>;
 }

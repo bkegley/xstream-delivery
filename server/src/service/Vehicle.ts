@@ -16,4 +16,11 @@ export class VehicleService extends BaseService implements IVehicleService {
 
     return vehicle;
   }
+
+  async getVehicleByName(name: string) {
+    return this.manager
+      .createQueryBuilder(Vehicle, "vehicles")
+      .where("name = :name", { name })
+      .getOne();
+  }
 }

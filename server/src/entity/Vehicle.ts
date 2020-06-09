@@ -5,6 +5,11 @@ export class Vehicle {
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @Column({
+    default: false,
+  })
+  isDefault!: boolean;
+
   @Column()
   name!: string;
 
