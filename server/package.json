@@ -22,7 +22,7 @@
     "reflect-metadata": "^0.1.13",
     "socket.io": "^2.3.0",
     "tmi.js": "^1.5.0",
-    "typeorm": "^0.2.24"
+    "typeorm": "^0.2.25"
   },
   "devDependencies": {
     "@types/cors": "^2.8.6",
